@@ -66,7 +66,7 @@ class UserService:
             new_user.nickname = new_nickname
             session.add(new_user)
             await session.commit()
-            await email_service.send_verification_email(new_user)
+            # await email_service.send_verification_email(new_user)
             
             return new_user
         except ValidationError as e:
@@ -113,7 +113,7 @@ class UserService:
 
     @classmethod
     async def register_user(cls, session: AsyncSession, user_data: Dict[str, str], get_email_service) -> Optional[User]:
-        return await cls.create(session, user_data, get_email_service)
+        return await cls.create(session, user_data, get_email_service())
     
 
     @classmethod

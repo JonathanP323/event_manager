@@ -1,4 +1,5 @@
-version: "3.8"
+version: '3.8'
+
 services:
   postgres:
     image: postgres:16.2
@@ -23,24 +24,19 @@ services:
     depends_on:
       - postgres
     ports:
-      - "5050:80"  # Expose PgAdmin on port 5050 of the host
+      - "5050:80" # Expose PgAdmin on port 5050 of the host
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     networks:
       - app-network
 
   fastapi:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     volumes:
-      - ./app:/app
+      - ./:/myapp/
     depends_on:
       postgres:
         condition: service_healthy
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-    ports:
-      - "8000:8000"  #  Add this line to access FastAPI docs at localhost:8080/docs
     networks:
       - app-network
 
@@ -61,4 +57,3 @@ volumes:
 
 networks:
   app-network:
-
